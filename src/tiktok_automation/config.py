@@ -55,6 +55,7 @@ class Settings(BaseSettings):
     app_public_base_url: str | None = None
     notification_email_to: str | None = None
     notification_email_from: str | None = None
+    notification_email_sender_name: str | None = None
     notification_attach_video_max_mb: int = 20
     smtp_host: str | None = None
     smtp_port: int = 587

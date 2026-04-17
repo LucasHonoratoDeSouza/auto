@@ -5,6 +5,7 @@ import re
 import smtplib
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
+from email.utils import formataddr
 from pathlib import Path
 from threading import Lock, Thread
 from time import sleep
@@ -346,7 +347,9 @@ def _compose_notification_message(item: QueueItem) -> tuple[EmailMessage, bool]:
 
     message = EmailMessage()
     message["Subject"] = f"[Cortes Lab] Post em {settings.notification_lead_minutes} min: {item.title}"
-    message["From"] = settings.notification_email_from or settings.smtp_username or ""
+    sender_email = settings.notification_email_from or settings.smtp_username or ""
+    sender_name = settings.notification_email_sender_name
+    message["From"] = formataddr((sender_name, sender_email)) if sender_name else sender_email
     message["To"] = settings.notification_email_to or ""
     message.set_content("\n".join(body_lines))
     message.add_attachment(
