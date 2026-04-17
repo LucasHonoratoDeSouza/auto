@@ -1,0 +1,22 @@
+{
+  "queue_id": "ecd00a84961c",
+  "run_id": "lh0shfhyo6w-20260417-012514",
+  "candidate_rank": 3,
+  "title": "Você aprende a errar.",
+  "video_path": "github_queue/videos/ecd00a84961c.mp4",
+  "caption": "Você aprende a errar. #cortes #ia #tecnologia #saas",
+  "hashtags": [],
+  "privacy_level": null,
+  "status": "queued",
+  "approved_at": "2026-04-17T01:28:56.528174+00:00",
+  "scheduled_at": "2026-04-17T21:25:00-03:00",
+  "schedule_reason": "sexta prime",
+  "notification_sent_at": null,
+  "notification_channel": null,
+  "posted_at": null,
+  "publish_id": null,
+  "attempts": 0,
+  "error": null,
+  "github_video_url": "https://raw.githubusercontent.com/LucasHonoratoDeSouza/auto/main/github_queue/videos/ecd00a84961c.mp4",
+  "notify_at": "2026-04-17T21:20:00-03:00"
+}
