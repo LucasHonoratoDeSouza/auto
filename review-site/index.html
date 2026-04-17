@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Linvesther Studio</title>
+    <meta
+      name="description"
+      content="Invite-only short-form workflow for creators and approved partners. Clip long videos, review captions, confirm rights, and queue posts."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/assets/app-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">Linvesther Studio</a>
+      <nav class="site-nav">
+        <a href="#workflow">Workflow</a>
+        <a href="#request-access">Request access</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Invite-only beta</p>
+          <h1>Short-form publishing workflow for creators and approved partners.</h1>
+          <p class="lede">
+            Linvesther Studio helps creators and rights-approved partners turn long-form
+            videos into short clips, review captions, confirm permissions, and queue
+            posts for TikTok-ready publishing.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#request-access">Request access</a>
+            <a class="button button-secondary" href="#compliance">See compliance flow</a>
+          </div>
+        </div>
+        <div class="hero-panel" aria-hidden="true">
+          <div class="signal-card">
+            <span class="signal-label">Creator-safe workflow</span>
+            <strong>Editable caption. Explicit approval. Rights-aware intake.</strong>
+          </div>
+          <div class="signal-grid">
+            <div>
+              <span>01</span>
+              <p>Ingest long-form source material.</p>
+            </div>
+            <div>
+              <span>02</span>
+              <p>Review clips, metadata, and usage rights.</p>
+            </div>
+            <div>
+              <span>03</span>
+              <p>Queue creator-approved exports for posting.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="workflow">
+        <div class="section-head">
+          <p class="eyebrow">Workflow</p>
+          <h2>Built around review, consent, and authorized media.</h2>
+        </div>
+        <div class="workflow-grid">
+          <article>
+            <h3>Source intake</h3>
+            <p>
+              Import owned videos or partner-approved footage, attach channel context,
+              and log whether content is owned, licensed, or permissioned before
+              editing starts.
+            </p>
+          </article>
+          <article>
+            <h3>Clip review</h3>
+            <p>
+              Generate short candidates, refine timing, and keep captions editable so
+              creators can adjust text and hashtags before anything is sent out.
+            </p>
+          </article>
+          <article>
+            <h3>Approval and queue</h3>
+            <p>
+              Approved clips move into a queue with scheduled windows, status tracking,
+              and manual or API-based delivery depending the connected platform setup.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section compliance" id="compliance">
+        <div class="section-head">
+          <p class="eyebrow">Compliance</p>
+          <h2>How the product handles creator consent.</h2>
+        </div>
+        <div class="compliance-layout">
+          <div class="compliance-copy">
+            <p>
+              Linvesther Studio is designed for creators, owned channels, and
+              partner-approved media workflows. Users must review or approve clip
+              metadata before upload. The product is not intended for reposting
+              arbitrary third-party content without authorization.
+            </p>
+            <ul class="check-list">
+              <li>Creator identity is shown before export.</li>
+              <li>Caption and hashtags remain editable before upload.</li>
+              <li>Posting happens only after explicit user approval.</li>
+              <li>Publishing status is tracked after export.</li>
+            </ul>
+          </div>
+          <div class="compliance-panel">
+            <p class="panel-label">Current onboarding policy</p>
+            <strong>Manual onboarding for creators and approved partners.</strong>
+            <p>
+              Access is reviewed case by case while the beta expands. Requests are
+              prioritized for creators managing their own channels or authorized media
+              teams working with documented permissions.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section request-section" id="request-access">
+        <div class="section-head">
+          <p class="eyebrow">Request access</p>
+          <h2>Join the onboarding list.</h2>
+          <p class="section-note">
+            Access requests are reviewed manually. Submit your channel and rights model
+            so we can verify fit.
+          </p>
+        </div>
+
+        <form id="access-form" class="request-form">
+          <div class="field-grid">
+            <label>
+              <span>Full name</span>
+              <input name="full_name" type="text" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input name="email" type="email" required />
+            </label>
+            <label>
+              <span>TikTok handle</span>
+              <input name="tiktok_handle" type="text" placeholder="@creator" required />
+            </label>
+            <label>
+              <span>Primary channel URL</span>
+              <input name="channel_url" type="url" placeholder="https://..." required />
+            </label>
+            <label>
+              <span>Company or brand</span>
+              <input name="company" type="text" />
+            </label>
+            <label>
+              <span>Rights model</span>
+              <select name="rights_model" required>
+                <option value="">Select one</option>
+                <option value="owned">Owned content</option>
+                <option value="licensed">Licensed library</option>
+                <option value="permissioned">Partner-approved content</option>
+              </select>
+            </label>
+            <label>
+              <span>Estimated posts per week</span>
+              <input name="posts_per_week" type="number" min="1" max="100" required />
+            </label>
+            <label>
+              <span>Team size</span>
+              <input name="team_size" type="number" min="1" max="50" />
+            </label>
+          </div>
+
+          <label class="field-stack">
+            <span>How will you use the workflow?</span>
+            <textarea
+              name="use_case"
+              rows="5"
+              placeholder="Describe the videos you publish, who owns the source material, and how approvals happen."
+              required
+            ></textarea>
+          </label>
+
+          <label class="checkbox-row">
+            <input name="rights_confirmation" type="checkbox" required />
+            <span>I confirm that I publish only content I own, license, or have explicit permission to repurpose.</span>
+          </label>
+
+          <div class="form-actions">
+            <button class="button button-primary" type="submit">Send request</button>
+            <p id="form-feedback" class="form-feedback" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>Linvesther Studio</strong>
+        <p>Invite-only short-form workflow for creators and approved partners.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/privacy">Privacy policy</a>
+        <a href="/terms">Terms of service</a>
+        <a href="mailto:linvesther@gmail.com">linvesther@gmail.com</a>
+      </div>
+    </footer>
+
+    <script src="/script.js"></script>
+  </body>
+</html>
