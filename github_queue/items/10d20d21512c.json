@@ -1,0 +1,22 @@
+{
+  "queue_id": "10d20d21512c",
+  "run_id": "lh0shfhyo6w-20260417-012514",
+  "candidate_rank": 2,
+  "title": "Porque eles lá dentro, primeiro, eles não podem usar o",
+  "video_path": "github_queue/videos/10d20d21512c.mp4",
+  "caption": "Porque eles lá dentro, primeiro, eles não podem usar o. #cortes",
+  "hashtags": [],
+  "privacy_level": null,
+  "status": "queued",
+  "approved_at": "2026-04-17T01:28:55.742219+00:00",
+  "scheduled_at": "2026-04-17T18:50:00-03:00",
+  "schedule_reason": "sexta a noite",
+  "notification_sent_at": null,
+  "notification_channel": null,
+  "posted_at": null,
+  "publish_id": null,
+  "attempts": 0,
+  "error": null,
+  "github_video_url": "https://raw.githubusercontent.com/LucasHonoratoDeSouza/auto/main/github_queue/videos/10d20d21512c.mp4",
+  "notify_at": "2026-04-17T18:45:00-03:00"
+}
