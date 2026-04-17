@@ -3,10 +3,12 @@ from __future__ import annotations
 import mimetypes
 import re
 import smtplib
+from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import formataddr
 from pathlib import Path
+from shutil import copy2
 from threading import Lock, Thread
 from time import sleep
 from uuid import uuid4
@@ -32,7 +34,7 @@ from tiktok_automation.schemas import (
     WebJob,
     WebJobStatus,
 )
-from tiktok_automation.utils import ensure_directory, read_json, write_json
+from tiktok_automation.utils import ensure_directory, read_json, run_command, write_json
 
 settings = get_settings()
 assets_dir = Path(__file__).with_name("web_assets")
@@ -40,6 +42,9 @@ jobs_root = ensure_directory(settings.workspace_root / "web_jobs")
 queue_path = settings.workspace_root / "post_queue.json"
 project_root = Path(__file__).resolve().parents[2]
 env_path = project_root / ".env"
+github_queue_root = ensure_directory(project_root / "github_queue")
+github_queue_items_root = ensure_directory(github_queue_root / "items")
+github_queue_videos_root = ensure_directory(github_queue_root / "videos")
 app_timezone = ZoneInfo("America/Sao_Paulo")
 queue_lock = Lock()
 queue_worker_started = False
@@ -129,6 +134,10 @@ def _delivery_mode() -> str:
     return settings.queue_execution_mode.strip().lower() or "notify_email"
 
 
+def _uses_github_actions_queue() -> bool:
+    return _delivery_mode() == "github_actions_email"
+
+
 def _email_status() -> dict:
     has_host = bool(settings.smtp_host)
     has_to = bool(settings.notification_email_to)
@@ -184,6 +193,74 @@ def _manual_post_record(item: QueueItem) -> dict:
             "channel": item.notification_channel or "email",
         },
     }
+
+
+def _github_queue_manifest_path(queue_id: str) -> Path:
+    return github_queue_items_root / f"{queue_id}.json"
+
+
+def _github_queue_video_path(queue_id: str, source_path: str) -> Path:
+    suffix = Path(source_path).suffix or ".mp4"
+    return github_queue_videos_root / f"{queue_id}{suffix}"
+
+
+def _github_repo_slug() -> str | None:
+    try:
+        result = run_command(["git", "remote", "get-url", "origin"], cwd=project_root)
+    except Exception:
+        return None
+    remote = result.stdout.strip()
+    match = re.search(r"github\.com[:/](.+?)(?:\.git)?$", remote)
+    return match.group(1) if match else None
+
+
+def _github_queue_public_video_url(item: QueueItem) -> str | None:
+    repo_slug = _github_repo_slug()
+    if not repo_slug:
+        return None
+    source_path = item.video_path
+    relative_path = _github_queue_video_path(item.queue_id, source_path).relative_to(project_root)
+    return f"https://raw.githubusercontent.com/{repo_slug}/main/{relative_path.as_posix()}"
+
+
+def _sync_queue_item_to_github_repo(item: QueueItem) -> None:
+    if not _uses_github_actions_queue():
+        return
+
+    source_video = Path(item.video_path)
+    if not source_video.exists():
+        raise FileNotFoundError(f"Video nao encontrado para sync do GitHub: {source_video}")
+
+    repo_video_path = _github_queue_video_path(item.queue_id, item.video_path)
+    copy2(source_video, repo_video_path)
+
+    payload = deepcopy(item.model_dump(mode="json"))
+    payload["video_path"] = str(repo_video_path.relative_to(project_root))
+    payload["github_video_url"] = _github_queue_public_video_url(item)
+    payload["notify_at"] = _notify_at(item).isoformat()
+    write_json(_github_queue_manifest_path(item.queue_id), payload)
+
+    if not settings.github_queue_autopush:
+        return
+
+    run_command(["git", "add", "github_queue"], cwd=project_root)
+    diff = run_command(["git", "diff", "--cached", "--name-only", "--", "github_queue"], cwd=project_root)
+    if not diff.stdout.strip():
+        return
+    branch = run_command(["git", "branch", "--show-current"], cwd=project_root).stdout.strip() or "main"
+    timestamp = datetime.now(app_timezone).strftime("%Y-%m-%d %H:%M")
+    run_command(
+        [
+            "git",
+            "commit",
+            "-m",
+            f"Sync GitHub queue {timestamp}",
+            "--",
+            "github_queue",
+        ],
+        cwd=project_root,
+    )
+    run_command(["git", "push", "origin", branch], cwd=project_root)
 
 
 def _upsert_env_value(key: str, value: str) -> None:
@@ -458,6 +535,8 @@ def _queue_worker_loop() -> None:
     while True:
         sleep(20)
         mode = _delivery_mode()
+        if mode == "github_actions_email":
+            continue
         if mode == "direct_post":
             if not _tiktok_status()["configured"]:
                 continue
@@ -798,6 +877,7 @@ def approve_run_candidate(run_id: str, request: ApproveCandidateRequest) -> dict
             items.append(queue_item)
         _save_queue(items)
 
+    _sync_queue_item_to_github_repo(queue_item)
     return queue_item.model_dump(mode="json")
 
 
@@ -825,6 +905,7 @@ def mark_queue_item_posted(queue_id: str) -> dict:
         items = [updated_item if item.queue_id == queue_id else item for item in items]
         _save_queue(items)
 
+    _sync_queue_item_to_github_repo(updated_item)
     return {
         "queue": updated_item.model_dump(mode="json"),
         "post": post_record,

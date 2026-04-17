@@ -57,6 +57,7 @@ class Settings(BaseSettings):
     notification_email_from: str | None = None
     notification_email_sender_name: str | None = None
     notification_attach_video_max_mb: int = 20
+    github_queue_autopush: bool = True
     smtp_host: str | None = None
     smtp_port: int = 587
     smtp_username: str | None = None

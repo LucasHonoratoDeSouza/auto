@@ -5,7 +5,7 @@ Pipeline inicial para:
 1. pesquisar o que hoje realmente influencia distribuicao no TikTok;
 2. receber um link de video, baixar a fonte e preparar um run de trabalho;
 3. transcrever, ranquear cortes curtos e renderizar videos verticais com legenda burn-in;
-4. operar em fila semi-automatica, enviando o video por email antes da janela de postagem ou, quando liberado, postar via TikTok API.
+4. operar em fila semi-automatica, exportando a fila para o GitHub e enviando o video por email via GitHub Actions antes da janela de postagem ou, quando liberado, postar via TikTok API.
 5. aprender com performance via loop estilo reforco/bandit para decidir o proximo experimento.
 6. operar por interface web local para colar um link e gerar cortes sem usar o CLI no dia a dia.
 
@@ -44,7 +44,7 @@ cp .env.example .env
 Preencha ao menos:
 
 - `TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET` e `TIKTOK_REDIRECT_URI` para o fluxo de Login Kit.
-- `SMTP_HOST`, `SMTP_PORT`, `NOTIFICATION_EMAIL_TO` e `NOTIFICATION_EMAIL_FROM` para o modo semi-automatico por email.
+- `SMTP_HOST`, `SMTP_PORT`, `NOTIFICATION_EMAIL_TO` e `NOTIFICATION_EMAIL_FROM` para o modo semi-automatico por email via GitHub Actions.
 
 Para comecar sem pagar:
 
@@ -72,19 +72,21 @@ Fluxo:
 2. clicar em `Gerar cortes`;
 3. esperar as etapas `download -> transcript -> ranking -> render`;
 4. revisar os videos prontos, ajustar a caption e clicar em `Aprovar`;
-5. o video entra na fila e o sistema escolhe a proxima janela automaticamente;
-6. 5 minutos antes da janela, o app envia email com o video, caption e hashtags;
+5. o video entra na fila, o sistema escolhe a proxima janela automaticamente e sincroniza o pacote para o GitHub;
+6. 5 minutos antes da janela, o GitHub Actions envia email com o video, caption e hashtags;
 7. depois do upload manual no TikTok, clique em `Marcar postado`.
 
 Os jobs ficam em `workspace/web_jobs/` e os runs completos continuam em `workspace/runs/<run_id>/`.
 A fila de postagem fica em `workspace/post_queue.json`.
+A fila publicada para o GitHub fica em `github_queue/`.
 
 Variaveis novas para o modo semi-automatico:
 
-- `QUEUE_EXECUTION_MODE=notify_email`
+- `QUEUE_EXECUTION_MODE=github_actions_email`
 - `NOTIFICATION_LEAD_MINUTES=5`
 - `NOTIFICATION_EMAIL_TO=voce@dominio.com`
 - `NOTIFICATION_EMAIL_FROM=voce@dominio.com`
+- `GITHUB_QUEUE_AUTOPUSH=true`
 - `SMTP_HOST=smtp.gmail.com`
 - `SMTP_PORT=587`
 - `SMTP_USERNAME=voce@dominio.com`
@@ -93,6 +95,20 @@ Variaveis novas para o modo semi-automatico:
 Se quiser incluir um link clicavel junto no email, configure tambem:
 
 - `APP_PUBLIC_BASE_URL=https://seu-host-publico`
+
+Para o GitHub Actions funcionar com o app fechado, configure os secrets do repo:
+
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USERNAME`
+- `SMTP_PASSWORD`
+- `SMTP_USE_SSL`
+- `SMTP_USE_TLS`
+- `MAIL_TO`
+- `MAIL_FROM`
+- `MAIL_SENDER_NAME`
+- `NOTIFICATION_LEAD_MINUTES`
+- `NOTIFICATION_ATTACH_VIDEO_MAX_MB`
 
 ## Uso rapido
 

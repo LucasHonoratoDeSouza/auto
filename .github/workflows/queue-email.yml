@@ -1,0 +1,53 @@
+name: Queue Email
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run queue processor
+        id: processor
+        continue-on-error: true
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_USE_SSL: ${{ secrets.SMTP_USE_SSL }}
+          SMTP_USE_TLS: ${{ secrets.SMTP_USE_TLS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_SENDER_NAME: ${{ secrets.MAIL_SENDER_NAME }}
+          NOTIFICATION_LEAD_MINUTES: ${{ secrets.NOTIFICATION_LEAD_MINUTES }}
+          NOTIFICATION_ATTACH_VIDEO_MAX_MB: ${{ secrets.NOTIFICATION_ATTACH_VIDEO_MAX_MB }}
+        run: python .github/scripts/process_queue.py
+
+      - name: Commit queue state
+        if: always()
+        run: |
+          if git diff --quiet -- github_queue; then
+            echo "No queue updates to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add github_queue
+          git commit -m "Update GitHub queue state"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - name: Fail workflow if processor failed
+        if: steps.processor.outcome != 'success'
+        run: exit 1
