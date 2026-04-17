@@ -10,7 +10,7 @@ if (form && feedback) {
 
     const subject = `[Access request] ${values.full_name} · ${values.tiktok_handle}`;
     const body = [
-      "Linvesther Studio access request",
+      "Signal Cut Studio access request",
       "",
       `Full name: ${values.full_name}`,
       `Email: ${values.email}`,

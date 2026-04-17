@@ -18,7 +18,7 @@ Use um nome que bata com o site e nao mencione TikTok.
 
 Sugestao:
 
-- `Linvesther Studio`
+- `Signal Cut Studio`
 
 ## Descricao curta
 
@@ -47,13 +47,13 @@ Substitua pela URL publica final do site:
 ### Se estiver usando `user.info.basic` + `video.upload`
 
 ```text
-Linvesther Studio is an invite-only workflow for creators and approved partners who manage owned, licensed, or permissioned media. Users import long-form source material, review short-form clips, edit captions and hashtags, and explicitly approve exports before anything is sent to TikTok. We use user.info.basic to identify the connected TikTok account and show the creator which account is being used during the export flow. We use video.upload to send approved media to TikTok only after user review and consent, so the creator can continue the final editing and publishing flow inside TikTok.
+Signal Cut Studio is an invite-only workflow for creators and approved partners who manage owned, licensed, or permissioned media. Users import long-form source material, review short-form clips, edit captions and hashtags, and explicitly approve exports before anything is sent to TikTok. We use user.info.basic to identify the connected TikTok account and show the creator which account is being used during the export flow. We use video.upload to send approved media to TikTok only after user review and consent, so the creator can continue the final editing and publishing flow inside TikTok.
 ```
 
 ### Se depois liberar `video.publish`
 
 ```text
-Linvesther Studio is an invite-only workflow for creators and approved partners who manage owned, licensed, or permissioned media. Users import long-form source material, review short-form clips, edit captions and hashtags, and explicitly approve exports before anything is sent to TikTok. We use user.info.basic to identify the connected TikTok account and show the creator which account is being used during the export flow. We use video.publish only after the user has reviewed the selected clip, edited metadata if needed, and consented to publish to their own authorized TikTok account.
+Signal Cut Studio is an invite-only workflow for creators and approved partners who manage owned, licensed, or permissioned media. Users import long-form source material, review short-form clips, edit captions and hashtags, and explicitly approve exports before anything is sent to TikTok. We use user.info.basic to identify the connected TikTok account and show the creator which account is being used during the export flow. We use video.publish only after the user has reviewed the selected clip, edited metadata if needed, and consented to publish to their own authorized TikTok account.
 ```
 
 ## O que mostrar no demo video
