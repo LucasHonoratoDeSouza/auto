@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cortes Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/app.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Modo gratuito</p>
+          <h1>Cole o link do YouTube. O resto roda sozinho.</h1>
+          <p class="lede">
+            O pipeline baixa o video, tenta usar captions gratis do YouTube, cai para
+            Whisper local quando precisar, escolhe os melhores trechos e renderiza os
+            cortes verticais com legenda.
+          </p>
+        </div>
+
+        <form id="job-form" class="control-panel">
+          <label class="field field-large">
+            <span>Link do video</span>
+            <input
+              id="video-url"
+              name="url"
+              type="url"
+              placeholder="https://www.youtube.com/watch?v=..."
+              required
+            />
+          </label>
+
+          <div class="inline-fields">
+            <label class="field">
+              <span>Direitos</span>
+              <select id="rights-status" name="rights_status">
+                <option value="permissioned" selected>permissioned</option>
+                <option value="owned">owned</option>
+                <option value="licensed">licensed</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Idioma</span>
+              <input id="language" name="language" type="text" placeholder="pt" />
+            </label>
+          </div>
+
+          <details class="advanced">
+            <summary>Opcoes</summary>
+            <div class="inline-fields">
+              <label class="field">
+                <span>Candidatos</span>
+                <input id="top-k" name="top_k" type="number" min="1" max="10" value="5" />
+              </label>
+              <label class="field">
+                <span>Renders</span>
+                <input
+                  id="render-top-k"
+                  name="render_top_k"
+                  type="number"
+                  min="1"
+                  max="5"
+                  value="5"
+                />
+              </label>
+            </div>
+          </details>
+
+          <button id="submit-button" class="submit-button" type="submit">
+            Gerar cortes
+          </button>
+        </form>
+      </section>
+
+      <section id="status-panel" class="status-panel hidden" aria-live="polite">
+        <div class="status-line">
+          <span class="status-label">Status</span>
+          <strong id="status-text">Na fila</strong>
+        </div>
+        <p id="status-message" class="status-message"></p>
+        <p id="status-meta" class="status-meta"></p>
+      </section>
+
+      <section id="results-panel" class="results-panel hidden">
+        <div class="section-head">
+          <p class="eyebrow">Resultado</p>
+          <h2 id="results-title">Cortes gerados</h2>
+          <p id="results-subtitle" class="section-note"></p>
+        </div>
+        <div id="results-grid" class="results-grid"></div>
+      </section>
+
+      <section class="recent-panel">
+        <div class="section-head">
+          <p class="eyebrow">Historico local</p>
+          <h2>Ultimos runs</h2>
+        </div>
+        <div id="recent-grid" class="recent-grid"></div>
+      </section>
+    </main>
+
+    <template id="result-card-template">
+      <article class="result-card">
+        <div class="video-shell">
+          <video controls preload="metadata"></video>
+        </div>
+        <div class="result-body">
+          <div class="result-topline">
+            <span class="rank-badge"></span>
+            <span class="score-badge"></span>
+            <span class="queue-badge"></span>
+          </div>
+          <h3 class="result-title"></h3>
+          <p class="result-meta"></p>
+          <ul class="reason-list"></ul>
+          <label class="caption-label">
+            <span>Caption</span>
+            <textarea class="caption-input" rows="4"></textarea>
+          </label>
+          <p class="queue-note"></p>
+          <div class="actions">
+            <button class="ghost-button copy-button" type="button">Copiar caption</button>
+            <button class="approve-button" type="button">Aprovar</button>
+            <a class="ghost-link file-link" target="_blank" rel="noreferrer">Abrir video</a>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <template id="recent-card-template">
+      <article class="recent-card">
+        <div class="recent-media">
+          <video controls preload="metadata"></video>
+        </div>
+        <div class="recent-body">
+          <h3 class="recent-title"></h3>
+          <p class="recent-meta"></p>
+          <button class="ghost-button load-run-button" type="button">Abrir run</button>
+        </div>
+      </article>
+    </template>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
