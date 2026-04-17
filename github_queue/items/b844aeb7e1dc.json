@@ -1,0 +1,22 @@
+{
+  "queue_id": "b844aeb7e1dc",
+  "run_id": "lh0shfhyo6w-20260417-012514",
+  "candidate_rank": 1,
+  "title": "tinha aqueles milhões de cursos porcaria, aquele monte de charlatão",
+  "video_path": "github_queue/videos/b844aeb7e1dc.mp4",
+  "caption": "tinha aqueles milhões de cursos porcaria, aquele monte de charlatão. #cortes #podcast #entrevista #ia",
+  "hashtags": [],
+  "privacy_level": null,
+  "status": "queued",
+  "approved_at": "2026-04-17T01:28:51.517486+00:00",
+  "scheduled_at": "2026-04-17T12:05:00-03:00",
+  "schedule_reason": "janela de almoco",
+  "notification_sent_at": null,
+  "notification_channel": null,
+  "posted_at": null,
+  "publish_id": null,
+  "attempts": 0,
+  "error": null,
+  "github_video_url": "https://raw.githubusercontent.com/LucasHonoratoDeSouza/auto/main/github_queue/videos/b844aeb7e1dc.mp4",
+  "notify_at": "2026-04-17T12:00:00-03:00"
+}
